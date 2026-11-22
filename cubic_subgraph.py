@@ -1,5 +1,8 @@
 import subprocess
 from argparse import ArgumentParser
+from itertools import combinations
+# ... we could make a helper combinations function ourselves using recursion,
+#     but this is probably more effective
 
 def initialize_neighbours(n: int) -> dict:
   # Each vertex has no neighbours at initialization
@@ -59,13 +62,26 @@ def encode(instance):
   clause.append(0)
   cnf.append(clause)
 
-  # 2. Vertices with fewer than 3 neighbours must have degree 0 in F:
+  # 2. Vertices with fewer than 3 neighbours must have degree 0 in H:
   for u in instance: # for each vertex u...
     if len(instance[u]) >= 3: continue
     for v in instance[u]: # for each neighbour v of vertex u...
       cnf.append([-get_var(u, v), 0])
-      # ...ensure u has no incident edges in F
-  print(cnf)
+      # ...ensure u has no incident edges in H
+
+  # 3. Vertices with >= 3 neighbours cannot have degree 1 in H
+  for u in instance:
+    if len(instance[u]) < 3: continue
+    for v in instance[u]:
+      clause = [-get_var(u,v)]
+      for w in instance[u]:
+        if w == v: continue
+        clause.append(get_var(u, w))
+      clause.append(0)
+      cnf.append(clause)
+
+    
+  
 
 
   
