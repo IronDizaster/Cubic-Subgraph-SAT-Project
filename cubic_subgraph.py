@@ -17,6 +17,7 @@ def load_instance(input_file_name) -> dict:
     edge_cnt = 0
     edges = []
     for line in file:
+      if not line.strip(): continue # skip empty lines
       edge_cnt += 1
       edge = list(map(int, line.split()))
       if len(edge) != 2:
@@ -36,7 +37,7 @@ def encode(instance):
   edge_to_var = {}
   var_to_edge = {}
   next_f_var = 1
-  edges = [(-1,-1)] # first edge is -1,-1 so edges are 1-indexed for clean conversion
+  edges = [(-1, -1)] # first edge is -1,-1 so edges are 1-indexed for clean conversion
   # Initialize look-up dictionaries for conversion between edges and DIMACS CNF vars
   # also initialize Edges
   for u in sorted(instance):
@@ -46,10 +47,17 @@ def encode(instance):
         var_to_edge[next_f_var] = (u,v)
         next_f_var += 1
         edges.append((u, v))
-  print(edges)
   cnf = []
 
   # 1. F must be non-empty
+  clause = []
+  for i in range(1, len(edges)):
+    clause.append(edge_to_var[edges[i]])
+  clause.append(0)
+  cnf.append(clause)
+  print(cnf)
+
+  # 2. 
 
   
 
