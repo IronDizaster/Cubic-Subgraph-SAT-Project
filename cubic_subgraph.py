@@ -134,10 +134,13 @@ def print_result(result, var_to_edge):
     print("#########[ Human readable result of the cubic subgraph ]##########")
     print("##################################################################")
     print()
+    edges = []
     for var in model:
       if var < 0: continue # skip negative vars
-      print(var_to_edge[var])
-
+      edges.append(var_to_edge[var])
+    print(f"Found subgraph H(V,F) with {len(edges)} edges:")
+    for edge in edges:
+       print(edge)
 
 if __name__ == "__main__":
     parser = ArgumentParser()
