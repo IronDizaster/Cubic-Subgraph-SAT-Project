@@ -74,17 +74,30 @@ def encode(instance):
     if len(instance[u]) < 3: continue
     for v in instance[u]:
       clause = [-get_var(u,v)]
-      for w in instance[u]:
-        if w == v: continue
+      for w in instance[u] - {v}:
         clause.append(get_var(u, w))
       clause.append(0)
       cnf.append(clause)
 
-    
-  
+  # 4. Vertices with >= 3 neighbours cannot have degree 2 in H
+  for u in instance:
+    if len(instance[u]) < 3: continue
+    for v1, v2 in combinations(instance[u], 2):
+      if v1 == v2: continue
+      clause = [-get_var(u,v1), -get_var(u, v2)]
+      for w in instance[u] - {v1, v2}:
+        clause.append(get_var(u, w))
+      clause.append(0)
+      cnf.append(clause)
 
+  # 5. Vertices with >= 4 neighbours cannot have degree >= 4 in H
+  for u in instance:
+    if len(instance[u]) < 4: continue
+    for v1, v2, v3, v4 in combinations(instance[u], 4):
+      clause = [-get_var(u, v1), -get_var(u, v2), -get_var(u, v3), -get_var(u, v4), 0]
+      cnf.append(clause)
 
-  
+  return cnf, len(edges) - 1, var_to_edge
 
 if __name__ == "__main__":
     parser = ArgumentParser()
