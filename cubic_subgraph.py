@@ -48,16 +48,25 @@ def encode(instance):
         next_f_var += 1
         edges.append((u, v))
   cnf = []
-
+  def get_var(u, v) -> int:
+    # helper function so that f_u,v = f_v,u
+    return edge_to_var[(min(u,v), max(u,v))]
+  
   # 1. F must be non-empty
   clause = []
   for i in range(1, len(edges)):
     clause.append(edge_to_var[edges[i]])
   clause.append(0)
   cnf.append(clause)
+
+  # 2. Vertices with fewer than 3 neighbours must have degree 0 in F:
+  for u in instance: # for each vertex u...
+    if len(instance[u]) >= 3: continue
+    for v in instance[u]: # for each neighbour v of vertex u...
+      cnf.append([-get_var(u, v), 0])
+      # ...ensure u has no incident edges in F
   print(cnf)
 
-  # 2. 
 
   
 
