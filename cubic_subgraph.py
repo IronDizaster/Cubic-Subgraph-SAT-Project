@@ -118,13 +118,25 @@ def print_result(result, var_to_edge):
     if (result.returncode == 20): # returncode for SAT is 10, for UNSAT is 20
         return
 
+    # parse the model from the output of the solver
+    # the model starts with 'v'
+    model = []
+    for line in result.stdout.decode('utf-8').split('\n'):
+        if line.startswith("v"):    # there might be more lines of the model, each starting with 'v'
+            variables = line.split(" ")
+            variables.remove("v")
+            model.extend(int(v) for v in variables)      
+    model.remove(0) # 0 is the end of the model, just ignore it
+
     # print human readable format
     print()
     print("##################################################################")
     print("#########[ Human readable result of the cubic subgraph ]##########")
     print("##################################################################")
     print()
-
+    for var in model:
+      if var < 0: continue # skip negative vars
+      print(var_to_edge[var])
 
 
 if __name__ == "__main__":
