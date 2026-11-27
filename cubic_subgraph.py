@@ -24,7 +24,7 @@ def load_instance(input_file_name) -> dict:
       edge_cnt += 1
       edge = list(map(int, line.split()))
       if len(edge) != 2:
-        raise Exception("ERROR: Invalid input format (some edge in input is not formatted as (x,y))")
+        raise Exception("ERROR: Invalid input format)")
       u = edge[0]
       v = edge[1]
       if u == v:
@@ -33,7 +33,7 @@ def load_instance(input_file_name) -> dict:
       neighbours[u].add(v)
       neighbours[v].add(u)
     if edge_cnt != K:
-      raise Exception("ERROR: Input provided more than K edges.")
+      raise Exception("ERROR: Input didn't provide K edges.")
     return neighbours
 
 def encode(instance):

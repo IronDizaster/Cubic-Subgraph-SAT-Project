@@ -8,4 +8,4 @@ def generate_k_n(n: int):
       for j in range(i+1, n+1):
         file.write(f"{i} {j}\n")
 
-generate_k_n(22)
+generate_k_n(10)
